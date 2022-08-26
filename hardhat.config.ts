@@ -4,8 +4,6 @@ import type { HardhatUserConfig } from "hardhat/config";
 import { resolve } from "path";
 import "tsconfig-paths/register";
 
-// import "./tasks";
-
 dotenvConfig({ path: resolve(__dirname, "./.env") });
 
 // Ensure that we have all the environment variables we need.
