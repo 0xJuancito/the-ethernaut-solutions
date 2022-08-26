@@ -38,7 +38,7 @@ WIP 🚧
 
 This is a warmup. Just start by calling `info()` and follow the instructions
 
-[Script](./scripts/warmup/HelloEthernaut.ts)
+[Script](./scripts/warmup/00-HelloEthernaut.ts)
 
 ## 01 - Fallback
 
