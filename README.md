@@ -165,6 +165,12 @@ await tx.wait();
 
 ## 07 - Force
 
+The goal of this challenge is to make the balance of the contract greater than zero.
+
+The problem is that the contract doesn't have any function to receive ether, nor does it have any fallback.
+
+But it can be forced to receive ether by calling `autodestruct` on another contract, and the remaining balance will go to the specified address.
+
 ## 08 - Vault
 
 ## 09 - King
