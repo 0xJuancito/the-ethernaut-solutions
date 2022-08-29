@@ -241,6 +241,33 @@ So, the ether is withdrawn twice and the balance is updated
 
 ## 11 - Elevator
 
+For this challenge we have to set the `top` variable to `true`
+
+```solidity
+function goTo(uint256 _floor) public {
+  Building building = Building(msg.sender);
+
+  if (!building.isLastFloor(_floor)) {
+    floor = _floor;
+    top = building.isLastFloor(floor);
+  }
+}
+
+```
+
+We just have to create a contract that implements the `Building` interface:
+
+```solidity
+interface Building {
+  function isLastFloor(uint256) external returns (bool);
+}
+
+```
+
+With the only catch that the first time it has to return `false` to enter the `if (!building.isLastFloor(_floor)) {}` and the second time it has to return `true` to satisfy the challenge requirement.
+
+[Script](./scripts/11-Building.ts) | [Test](./test/11-Building.spec.ts)
+
 ## 12 - Privacy
 
 ## 13 - Gatekeeper One
