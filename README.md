@@ -72,6 +72,12 @@ After those two steps we can call the `withdraw` and job done.
 
 ## 02 - Fallout
 
+In previous versions of Solidity there was no `constructor` function, so it had to be named with the same name as the contract.
+
+In this case the "constructor" had a typo and was named `Fal1out`. Just call the function to gain ownership of the contract.
+
+[Script](./scripts/02-Fallout.ts) | [Test](./test/02-Fallout.spec.ts)
+
 ## 03 - Coinflip
 
 ## 04 - Telephone
