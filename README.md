@@ -121,6 +121,25 @@ To satisfy the `tx.origin != msg.sender` requirement we just have to make the ca
 
 ## 05 - Token
 
+For this challenge we need to increment our tokens to over 20.
+
+In older versions of Solidity overflows and underflows didn't revert the tx. In this case, an underflow can be achieved in the function:
+
+````solidity
+function transfer(address _to, uint256 _value) public returns (bool) {
+    require(balances[msg.sender] - _value >= 0);
+    balances[msg.sender] -= _value;
+    balances[_to] += _value;
+    return true;
+}
+```
+
+If we send a `_value` greater than the balance we have, there will be an underflow, leading to a huge number.
+
+So, what we have to do is send, lets say 21 tokens to any other address, and then our balance will significantly increase!
+
+[Script](./scripts/05-Token.ts) | [Test](./test/05-Token.spec.ts)
+
 ## 06 - Delegation
 
 ## 07 - Force
@@ -162,3 +181,4 @@ To satisfy the `tx.origin != msg.sender` requirement we just have to make the ca
 ## 26 - Motorbike
 
 ## 27 - DoubleEntryPoint
+````
