@@ -1,4 +1,4 @@
-# Ethernaut Writeup
+# The Ethernaut Writeup
 
 Solutions to [The Ethernaut](https://ethernaut.openzeppelin.com/) CTF challenges ⛳️
 
