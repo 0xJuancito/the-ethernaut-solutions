@@ -171,6 +171,8 @@ The problem is that the contract doesn't have any function to receive ether, nor
 
 But it can be forced to receive ether by calling `autodestruct` on another contract, and the remaining balance will go to the specified address.
 
+[Script](./scripts/07-Force.ts) | [Test](./test/07-Force.spec.ts)
+
 ## 08 - Vault
 
 ## 09 - King
