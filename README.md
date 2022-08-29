@@ -1,6 +1,6 @@
 # Ethernaut Writeup
 
-Solutions to the [Ethernaut](https://ethernaut.openzeppelin.com/) CTF challenges ⛳️
+Solutions to [The Ethernaut](https://ethernaut.openzeppelin.com/) CTF challenges ⛳️
 
 WIP 🚧
 
