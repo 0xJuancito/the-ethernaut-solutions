@@ -104,6 +104,21 @@ Repeat it 10 times and we win.
 
 ## 04 - Telephone
 
+Here we have to claim ownership of the contract. In order to do that we have to call the function:
+
+```solidity
+function changeOwner(address _owner) public {
+  if (tx.origin != msg.sender) {
+    owner = _owner;
+  }
+}
+
+```
+
+To satisfy the `tx.origin != msg.sender` requirement we just have to make the call from another contract.
+
+[Script](./scripts/04-Telephone.ts) | [Test](./test/04-Telephone.spec.ts)
+
 ## 05 - Token
 
 ## 06 - Delegation
