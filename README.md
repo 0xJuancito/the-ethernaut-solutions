@@ -175,6 +175,16 @@ But it can be forced to receive ether by calling `autodestruct` on another contr
 
 ## 08 - Vault
 
+Here we have to guess a secret password to unlock the vault.
+
+The issue is that the password is stored in the contract as `private`. Nevertheless, it is possible to access private storage variables in contracts, if we know the slot they are in:
+
+```typescript
+const password = await ethers.provider.getStorageAt(contract.address, 1);
+```
+
+[Script](./scripts/08-Vault.ts) | [Test](./test/08-Vault.spec.ts)
+
 ## 09 - King
 
 ## 10 - Re-entrancy
