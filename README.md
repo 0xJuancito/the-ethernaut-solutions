@@ -80,6 +80,28 @@ In this case the "constructor" had a typo and was named `Fal1out`. Just call the
 
 ## 03 - Coinflip
 
+For this challenge we have to guess a coin flip for 10 times in a row.
+
+The "random" function looks like this:
+
+```solidity
+uint256 blockValue = uint256(blockhash(block.number.sub(1)));
+
+if (lastHash == blockValue) {
+    revert();
+}
+
+lastHash = blockValue;
+uint256 coinFlip = blockValue.div(FACTOR);
+bool side = coinFlip == 1 ? true : false;
+```
+
+Truly random numbers cannot be generated in Solidity. So, we can create an attacker contract with the same random function, calculate the outcome and send it to the original contract. This way we can make sure the guess will always be correct.
+
+Repeat it 10 times and we win.
+
+[Script](./scripts/03-CoinFlip.ts) | [Test](./test/03-CoinFlip.spec.ts)
+
 ## 04 - Telephone
 
 ## 05 - Token
