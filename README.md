@@ -68,6 +68,8 @@ So beforehand, we have to call the contribute, and make a small contribution to 
 
 After those two steps we can call the `withdraw` and job done.
 
+[Script](./scripts/01-Fallback.ts) | [Test](./test/01-Fallback.spec.ts)
+
 ## 02 - Fallout
 
 ## 03 - Coinflip
