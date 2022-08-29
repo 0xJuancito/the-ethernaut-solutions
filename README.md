@@ -187,6 +187,24 @@ const password = await ethers.provider.getStorageAt(contract.address, 1);
 
 ## 09 - King
 
+For this challenge we have to perform a DOS (Denial of Service) into the contract.
+
+```solidity
+receive() external payable {
+  require(msg.value >= prize || msg.sender == owner);
+  king.transfer(msg.value);
+  king = msg.sender;
+  prize = msg.value;
+}
+
+```
+
+The vulnerable line is `king.transfer(msg.value);`.
+
+We can create a contract that reverts when it receives some ether. So, when `transfer` is executed it will revert the tx, making the contract not usable anymore.
+
+[Script](./scripts/09-King.ts) | [Test](./test/09-King.spec.ts)
+
 ## 10 - Re-entrancy
 
 ## 11 - Elevator
