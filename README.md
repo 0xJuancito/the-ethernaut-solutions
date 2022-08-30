@@ -327,6 +327,67 @@ await tx.wait();
 
 ## 13 - Gatekeeper One
 
+Here we have to unlock three gates to pass the challenge.
+
+The first one is straightforward. We have to call the function from another contract:
+
+```solidity
+modifier gateOne() {
+    require(msg.sender != tx.origin);
+    _;
+}
+```
+
+The second one implies gas manipulation:
+
+```solidity
+modifier gateTwo() {
+    require(gasleft().mod(8191) == 0);
+    _;
+}
+```
+
+It is not an easy task to calculate the exact amount of gas spent until that point, so we have two options:
+
+- Use Remix debugger to find the exact number of gas left at that point
+- Brute force the contract to get a number that satisfies that condition
+
+In both cases, we have to work with the exact same Solidity version that was compiled, as different versions would results in different gas results. We can temporary bypass the third gate to calculate this number.
+
+On our auxiliary contract:
+
+```solidity
+function enter(uint256 gasOffset, bytes8 _gateKey) public {
+  gatekeeper.enter.gas(8191 * 10 + gasOffset)(_gateKey);
+}
+
+```
+
+The third gate involves byte calculation:
+
+```solidity
+modifier gateThree(bytes8 _gateKey) {
+    require(uint32(uint64(_gateKey)) == uint16(uint64(_gateKey)), "GatekeeperOne: invalid gateThree part one");
+    require(uint32(uint64(_gateKey)) != uint64(_gateKey), "GatekeeperOne: invalid gateThree part two");
+    require(uint32(uint64(_gateKey)) == uint16(tx.origin), "GatekeeperOne: invalid gateThree part three");
+    _;
+}
+```
+
+Let's say our address is `0xf39Fd6e51aad88F6F4ce6aB8827279cffFb92266`, and let's focus on the last condition:
+
+```solidity
+uint32(uint64(_gateKey)) == uint16(tx.origin) == 0x2266 == 0x00002266
+```
+
+This function looks like it is applying a mask `0xffffffff0000ffff` to the address.
+
+Let's complete the rest of the 8 bytes of the `_gateKey` with the address + the mask: `0x827279cf00002266`
+
+Fortunately this also satisfies the first two parts of the last gate. So we are done :)
+
+[Script](./scripts/13-GatekeeperOne.ts) | [Test](./test/13-GatekeeperOne.spec.ts)
+
 ## 14 - Gatekeeper Two
 
 ## 15 - Naught Coin
