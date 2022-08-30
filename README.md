@@ -392,6 +392,12 @@ Fortunately this also satisfies the first two parts of the last gate. So we are 
 
 ## 15 - Naught Coin
 
+The idea of this challenge is to move all the tokens away to another address.
+
+The contract has a `transfer` function with some restrictions, but the gotcha is that it inherits `ERC20`, which has other methods for interacting with the tokens, such as `transferFrom`, that can be used to move the tokens without the supposed restrictions.
+
+[Script](./scripts/15-NaughtCoin.ts) | [Test](./test/15-NaughtCoin.spec.ts)
+
 ## 16 - Preservation
 
 ## 17 - Recovery
