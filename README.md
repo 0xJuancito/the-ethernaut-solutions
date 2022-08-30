@@ -404,6 +404,15 @@ The contract has a `transfer` function with some restrictions, but the gotcha is
 
 ## 18 - MagicNumber
 
+The goal here is to write a contract in bytecode in less than 10 bytes that returns the number 42 when called.
+
+Here are two great writeups that explain it:
+
+- [How to deploy contracts using raw assembly opcodes | by 0xSage](https://medium.com/coinmonks/ethernaut-lvl-19-magicnumber-walkthrough-how-to-deploy-contracts-using-raw-assembly-opcodes-c50edb0f71a2)
+- [The Ethernaut Challenge #18 Solution — Magic Number | by StErMi](https://stermi.medium.com/the-ethernaut-challenge-18-solution-magic-number-2cb8edee383a)
+
+[Script](./scripts/18-MagicNum.ts) | [Test](./test/18-MagicNum.spec.ts)
+
 ## 19 - AlienCodex
 
 ## 20 - Denial
