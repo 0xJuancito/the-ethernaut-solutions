@@ -390,6 +390,46 @@ Fortunately this also satisfies the first two parts of the last gate. So we are 
 
 ## 14 - Gatekeeper Two
 
+For this one, we have to solve three mini-challenges:
+
+Gate 1 requires another contract to call the `enter` function.
+
+Gate 2 has some _assembly_ code that calculates the code size of the caller contract:
+
+```solidity
+modifier gateTwo() {
+    uint256 x;
+    assembly {
+        x := extcodesize(caller())
+    }
+    require(x == 0);
+    _;
+}
+```
+
+It requires the contract code to equal 0, which doesn't sound reasonable, but there's a catch. That function returns 0 when the contract is called in its `constructor`
+
+Gate 3 requires to do some bitwise calculation:
+
+```solidity
+modifier gateThree(bytes8 _gateKey) {
+    require(uint64(bytes8(keccak256(abi.encodePacked(msg.sender)))) ^ uint64(_gateKey) == uint64(0) - 1);
+    _;
+}
+```
+
+We can calculate the `_gateKey` like this:
+
+```solidity
+uint64(_gateKey) == (uint64(0) - 1) ^ uint64(bytes8(keccak256(abi.encodePacked(msg.sender))))
+```
+
+The inverse of the XOR function `^` is also the XOR function!
+
+We can then calculate the result of the equation in the attacker contract, replacing `msg.sender` with the contract address.
+
+[Script](./scripts/14-GatekeeperTwo.ts) | [Test](./test/14-GatekeeperTwo.spec.ts)
+
 ## 15 - Naught Coin
 
 The idea of this challenge is to move all the tokens away to another address.
