@@ -56,20 +56,14 @@ const config: HardhatUserConfig = {
     tests: "./test",
   },
   solidity: {
-    version: "0.6.2",
-    settings: {
-      metadata: {
-        // Not including the metadata hash
-        // https://github.com/paulrberg/hardhat-template/issues/31
-        bytecodeHash: "none",
+    compilers: [
+      {
+        version: "0.5.5",
       },
-      // Disable the optimizer when debugging
-      // https://hardhat.org/hardhat-network/#solidity-optimizer-support
-      optimizer: {
-        enabled: true,
-        runs: 800,
+      {
+        version: "0.6.2",
       },
-    },
+    ],
   },
   typechain: {
     outDir: "src/types",
