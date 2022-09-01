@@ -1,6 +1,6 @@
 import { ethers } from "hardhat";
 
-const CONTRACT_ADDRESS = "0x52B2fF047a8625da1D771CB7c08e8b83374F0eF9";
+const CONTRACT_ADDRESS = "0x322B2530fA33661890B60A14498c8361fa72BE74";
 const CONTRACT_NAME = "Shop";
 const ATTACKER_NAME = "ShopAttacker";
 
