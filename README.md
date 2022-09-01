@@ -440,6 +440,45 @@ The contract has a `transfer` function with some restrictions, but the gotcha is
 
 ## 16 - Preservation
 
+This challenge makes use of `delegatecall` to delegate the `setTime` function to two other contracts, but there is a misinterpretation of how the storage works in this case.
+
+Let's take a look at the first delegator contract:
+
+```solidity
+contract Preservation {
+  address public timeZone1Library;  // slot 0
+  address public timeZone2Library;  // slot 1
+  address public owner;             // slot 2
+  uint storedTime;                  // slot 3
+
+  function setFirstTime(uint _timeStamp) public {
+    timeZone1Library.delegatecall(abi.encodePacked(setTimeSignature, _timeStamp));
+  }
+}
+```
+
+Now let's take a look at the delegated contract:
+
+```solidity
+contract LibraryContract {
+  uint storedTime;                  // slot 0
+
+  function setTime(uint _time) public {
+    storedTime = _time;
+  }
+}
+```
+
+The `setTime` function, which modifies the `storedTime` is expected to modify the same variable on the delegator contract, but instead it modifies the one stored in the same slot, in this case, the one in slot 0: `timeZone1Library`
+
+We can then call `setFirstTime` with the address of an attacker contract.
+
+The attacker contract will contain a function `setTime` that sets the storage slot 2 as the attacker address.
+
+Then when we call `setFirstTime` again, it will turns us into the owner!
+
+[Script](./scripts/16-Preservation.ts) | [Test](./test/16-Preservation.spec.ts)
+
 ## 17 - Recovery
 
 ## 18 - MagicNumber
