@@ -6,7 +6,7 @@ import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/math/SafeMath.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract Dex is Ownable {
+contract DexTwo is Ownable {
     using SafeMath for uint256;
     address public token1;
     address public token2;
@@ -18,7 +18,7 @@ contract Dex is Ownable {
         token2 = _token2;
     }
 
-    function addLiquidity(address token_address, uint256 amount) public onlyOwner {
+    function add_liquidity(address token_address, uint256 amount) public onlyOwner {
         IERC20(token_address).transferFrom(msg.sender, address(this), amount);
     }
 
@@ -27,15 +27,14 @@ contract Dex is Ownable {
         address to,
         uint256 amount
     ) public {
-        require((from == token1 && to == token2) || (from == token2 && to == token1), "Invalid tokens");
         require(IERC20(from).balanceOf(msg.sender) >= amount, "Not enough to swap");
-        uint256 swapAmount = getSwapPrice(from, to, amount);
+        uint256 swapAmount = getSwapAmount(from, to, amount);
         IERC20(from).transferFrom(msg.sender, address(this), amount);
         IERC20(to).approve(address(this), swapAmount);
         IERC20(to).transferFrom(address(this), msg.sender, swapAmount);
     }
 
-    function getSwapPrice(
+    function getSwapAmount(
         address from,
         address to,
         uint256 amount
@@ -44,8 +43,8 @@ contract Dex is Ownable {
     }
 
     function approve(address spender, uint256 amount) public {
-        SwappableToken(token1).approve(msg.sender, spender, amount);
-        SwappableToken(token2).approve(msg.sender, spender, amount);
+        SwappableTokenTwo(token1).approve(msg.sender, spender, amount);
+        SwappableTokenTwo(token2).approve(msg.sender, spender, amount);
     }
 
     function balanceOf(address token, address account) public view returns (uint256) {
@@ -53,7 +52,7 @@ contract Dex is Ownable {
     }
 }
 
-contract SwappableToken is ERC20 {
+contract SwappableTokenTwo is ERC20 {
     address private _dex;
 
     constructor(

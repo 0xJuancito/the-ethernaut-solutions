@@ -619,6 +619,14 @@ So, if we swap from one token to the other many times we can exploit that miscal
 
 ## 23 - DEX TWO
 
+This challenge is very similar to the previous one, with the difference that this one omits the following validation when swapping tokens:
+
+```solidity
+require((from == token1 && to == token2) || (from == token2 && to == token1), "Invalid tokens");
+```
+
+This means that we can swap any token. So, we can create a random token. Send it to the contract, and swap it for the ones we're interested in.
+
 ## 24 - Puzzle Wallet
 
 ## 25 - Motorbike
