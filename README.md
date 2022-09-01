@@ -446,27 +446,29 @@ Let's take a look at the first delegator contract:
 
 ```solidity
 contract Preservation {
-  address public timeZone1Library;  // slot 0
-  address public timeZone2Library;  // slot 1
-  address public owner;             // slot 2
-  uint storedTime;                  // slot 3
+  address public timeZone1Library; // slot 0
+  address public timeZone2Library; // slot 1
+  address public owner; // slot 2
+  uint256 storedTime; // slot 3
 
-  function setFirstTime(uint _timeStamp) public {
+  function setFirstTime(uint256 _timeStamp) public {
     timeZone1Library.delegatecall(abi.encodePacked(setTimeSignature, _timeStamp));
   }
 }
+
 ```
 
 Now let's take a look at the delegated contract:
 
 ```solidity
 contract LibraryContract {
-  uint storedTime;                  // slot 0
+  uint256 storedTime; // slot 0
 
-  function setTime(uint _time) public {
+  function setTime(uint256 _time) public {
     storedTime = _time;
   }
 }
+
 ```
 
 The `setTime` function, which modifies the `storedTime` is expected to modify the same variable on the delegator contract, but instead it modifies the one stored in the same slot, in this case, the one in slot 0: `timeZone1Library`
@@ -507,9 +509,10 @@ The goal of this challenge is to become the owner of the contract.
 The contract has a vulnerable dynamic array because of the function:
 
 ```solidity
-function retract() contacted public {
+function retract() public contacted {
   codex.length--;
 }
+
 ```
 
 If the function is called when the array length is 0, it will underflow, resulting in having its length equal to the size of the storage.
@@ -529,9 +532,9 @@ const ownerPositionInMap = NUMBER_OF_SLOTS.sub(mapStartSlot);
 Then we can just override it and win:
 
 ```typescript
-const parsedAddress = ethers.utils.hexZeroPad(attacker.address, 32)
-const tx = await contract.revise(ownerPositionInMap, parsedAddress)
-await tx.wait()
+const parsedAddress = ethers.utils.hexZeroPad(attacker.address, 32);
+const tx = await contract.revise(ownerPositionInMap, parsedAddress);
+await tx.wait();
 ```
 
 [Script](./scripts/19-AlienCodex.ts) | [Test](./test/19-AlienCodex.spec.ts)
@@ -579,11 +582,12 @@ It is possible to write a contract that the first time, it return one value, and
 
 ```solidity
 function price() public payable returns (uint256) {
-    if (shop.isSold() == false) {
-        return 101;
-    }
-    return 0;
+  if (shop.isSold() == false) {
+    return 101;
+  }
+  return 0;
 }
+
 ```
 
 This way we trick the original contract.
@@ -591,6 +595,27 @@ This way we trick the original contract.
 [Script](./scripts/21-Shop.ts) | [Test](./test/21-Shop.spec.ts)
 
 ## 22 - DEX
+
+In this challenge we have to make the balance of some token in a DEX to be 0.
+
+There is a miscalculation in the price function:
+
+```solidity
+function getSwapPrice(
+  address from,
+  address to,
+  uint256 amount
+) public view returns (uint256) {
+  return ((amount * IERC20(to).balanceOf(address(this))) / IERC20(from).balanceOf(address(this)));
+}
+
+```
+
+As there are no floating numbers in Solidity, results are rounded, and it happens that sometimes they are rounded down.
+
+So, if we swap from one token to the other many times we can exploit that miscalculation and empty the contract
+
+[Script](./scripts/22-Dex.ts) | [Test](./test/22-Dex.spec.ts)
 
 ## 23 - DEX TWO
 
