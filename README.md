@@ -481,6 +481,14 @@ Then when we call `setFirstTime` again, it will turns us into the owner!
 
 ## 17 - Recovery
 
+In this challenge, we have to withdraw all the ether from a lost contract.
+
+To find the lost contract, we just have to connect to Etherscanner, check the internal transactions, and we will see that there was a contract created.
+
+We attach that address to a token contract, and call the `destroy` function with our address to get all the ether.
+
+[Script](./scripts/17-Recovery.ts)
+
 ## 18 - MagicNumber
 
 The goal here is to write a contract in bytecode in less than 10 bytes that returns the number 42 when called.
