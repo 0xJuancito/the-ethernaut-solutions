@@ -627,8 +627,16 @@ require((from == token1 && to == token2) || (from == token2 && to == token1), "I
 
 This means that we can swap any token. So, we can create a random token. Send it to the contract, and swap it for the ones we're interested in.
 
+[Script](./scripts/23-DexTwo.ts) | [Test](./test/23-DexTwo.spec.ts)
+
 ## 24 - Puzzle Wallet
 
 ## 25 - Motorbike
+
+The goal of this one is to autodestruct the `Engine` implementation.
+
+The vulnerability here, is that the implementation wasn't initialized, so we can become the `upgrader`, and then upgrade our contract to an attacker that autodestructs.
+
+[Script](./scripts/25-Motorbike.ts) | [Test](./test/25-Motorbike.spec.ts)
 
 ## 26 - DoubleEntryPoint
