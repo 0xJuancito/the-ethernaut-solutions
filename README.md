@@ -679,3 +679,20 @@ The vulnerability here, is that the implementation wasn't initialized, so we can
 [Script](./scripts/25-Motorbike.ts) | [Test](./test/25-Motorbike.spec.ts)
 
 ## 26 - DoubleEntryPoint
+
+This challenge is to teach us how to set up a Forta bot:
+
+```typescript
+const fortaAddress = await contract.forta();
+const fortaFactory = await ethers.getContractFactory("DoubleEntryPoint");
+const forta = fortaFactory.attach(fortaAddress);
+
+const detectionBotFactory = await ethers.getContractFactory("DoubleEntryPoint");
+const detectionBot = await detectionBotFactory.deploy(forta.address);
+await detectionBot.deployed();
+
+const tx = await forta.setDetectionBot(detectionBot.address);
+await tx.wait();
+```
+
+[Script](./scripts/26-DoubleEntryPoint.ts)
