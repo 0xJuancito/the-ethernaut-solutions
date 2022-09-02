@@ -2,8 +2,6 @@
 
 Solutions to [The Ethernaut](https://ethernaut.openzeppelin.com/) CTF challenges ⛳️
 
-WIP 🚧
-
 ## Contents
 
 0.  [Hello Ethernaut](#00---hello-ethernaut)
