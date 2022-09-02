@@ -24,15 +24,15 @@ WIP 🚧
 15. [Naught Coin](#15---naught-coin)
 16. [Preservation](#16---preservation)
 17. [Recovery](#17---recovery)
-18. [MagicNumber](#18---magic-number)
-19. [AlienCodex](#19---alien-codex)
+18. [MagicNumber](#18---magicnumber)
+19. [AlienCodex](#19---aliencodex)
 20. [Denial](#20---denial)
 21. [Shop](#21---shop)
 22. [DEX](#22---dex)
 23. [DEX TWO](#23---dex-two)
 24. [Puzzle Wallet](#24---puzzle-wallet)
 25. [Motorbike](#25---Motorbike)
-26. [DoubleEntryPoint](#26---double-entry-point)
+26. [DoubleEntryPoint](#26---doubleentrypoint)
 
 ## 00 - Hello Ethernaut
 
