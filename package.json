@@ -1,10 +1,10 @@
 {
-  "name": "@juanscolari/the-ethernaut-solutions",
+  "name": "@0xJuancito/the-ethernaut-solutions",
   "description": "Solutions to The Ethernaut CTF challenges",
   "version": "1.0.0",
   "author": {
     "name": "juancito.eth",
-    "url": "https://github.com/juanscolari/the-ethernaut-solutions"
+    "url": "https://github.com/0xJuancito/the-ethernaut-solutions"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.0.3",
