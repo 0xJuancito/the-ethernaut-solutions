@@ -167,7 +167,7 @@ The goal of this challenge is to make the balance of the contract greater than z
 
 The problem is that the contract doesn't have any function to receive ether, nor does it have any fallback.
 
-But it can be forced to receive ether by calling `autodestruct` on another contract, and the remaining balance will go to the specified address.
+But it can be forced to receive ether by calling `selfdestruct` on another contract, and the remaining balance will go to the specified address.
 
 [Script](./scripts/07-Force.ts) | [Test](./test/07-Force.spec.ts)
 
@@ -670,9 +670,9 @@ tx = await puzzleWallet.setMaxBalance(attacker.address);
 
 ## 25 - Motorbike
 
-The goal of this one is to autodestruct the `Engine` implementation.
+The goal of this one is to selfdestruct the `Engine` implementation.
 
-The vulnerability here, is that the implementation wasn't initialized, so we can become the `upgrader`, and then upgrade our contract to an attacker that autodestructs.
+The vulnerability here, is that the implementation wasn't initialized, so we can become the `upgrader`, and then upgrade our contract to an attacker that selfdestructs.
 
 [Script](./scripts/25-Motorbike.ts) | [Test](./test/25-Motorbike.spec.ts)
 
