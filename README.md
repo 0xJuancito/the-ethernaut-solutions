@@ -18,7 +18,7 @@ Solutions to [The Ethernaut](https://ethernaut.openzeppelin.com/) CTF challenges
 11. [Elevator](#11---elevator)
 12. [Privacy](#12---privacy)
 13. [Gatekeeper One](#13---gatekeeper-one)
-14. [Gatekeeper Two](#14---gatekeepertwo)
+14. [Gatekeeper Two](#14---gatekeeper-two)
 15. [Naught Coin](#15---naught-coin)
 16. [Preservation](#16---preservation)
 17. [Recovery](#17---recovery)
